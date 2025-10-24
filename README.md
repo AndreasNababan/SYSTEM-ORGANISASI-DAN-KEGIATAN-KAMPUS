@@ -53,7 +53,7 @@ Dashboard akan menampilkan statistik dan event berbeda sesuai peran pengguna yan
 ### 🔧 Langkah Instalasi
 ```bash
 git clone https://github.com/AndreasNababan/SYSTEM-ORGANISASI-DAN-KEGIATAN-KAMPUS.git
-cd NAMA-REPO-ANDA
+cd SYSTEM-ORGANISASI-DAN-KEGIATAN-KAMPUS
 cp .env.example .env
 composer install
 npm install
