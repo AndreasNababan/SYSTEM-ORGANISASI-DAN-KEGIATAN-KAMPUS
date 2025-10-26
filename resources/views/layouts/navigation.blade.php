@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <img src="{{ asset('logo.png') }}" alt="Logo Aplikasi" class="block h-10 w-auto">
                     </a>
                 </div>
 
@@ -26,17 +26,24 @@
                     <!-- Link untuk Admin & Ketua Organisasi -->
                     @if (in_array(Auth::user()->role, ['admin_kampus', 'ketua_organisasi']))
                         <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
-                            {{ __('Event') }} <!-- <-- DIUBAH DI SINI -->
+                            {{ __('Event') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('memberships.index')" :active="request()->routeIs('memberships.*')">
+                            {{ __('Keanggotaan') }}
                         </x-nav-link>
                     @endif
 
-                    <!-- Link untuk Mahasiswa (Contoh) -->
+                    <!-- Link untuk Mahasiswa -->
                     @if (Auth::user()->role == 'mahasiswa')
-                        <!-- 
-                        <x-nav-link :href="route('kegiatan.list')" :active="request()->routeIs('kegiatan.list')">
-                            {{ __('Daftar Kegiatan') }}
+                        <!-- Link 'Cari Organisasi' yang sudah benar -->
+                        <x-nav-link :href="route('organizations.browse')" :active="request()->routeIs('organizations.browse')">
+                            {{ __('Cari Organisasi') }}
                         </x-nav-link>
-                        -->
+
+                        <!-- ==== TAMBAHAN BARU (LANGKAH 4) ==== -->
+                        <x-nav-link :href="route('events.list')" :active="request()->routeIs('events.list')">
+                            {{ __('Daftar Event') }}
+                        </x-nav-link>
                     @endif
 
                 </div>
@@ -95,17 +102,30 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-             <!-- Link Khusus Admin Kampus (Responsive) -->
+            <!-- Link Responsif Admin -->
             @if (Auth::user()->role == 'admin_kampus')
                 <x-responsive-nav-link :href="route('organizations.index')" :active="request()->routeIs('organizations.*')">
                     {{ __('Organisasi') }}
                 </x-responsive-nav-link>
             @endif
 
-            <!-- Link untuk Admin & Ketua Organisasi (Responsive) -->
+            <!-- Link Responsif Admin & Ketua -->
             @if (in_array(Auth::user()->role, ['admin_kampus', 'ketua_organisasi']))
                 <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
-                    {{ __('Event') }} <!-- <-- DIUBAH DI SINI JUGA -->
+                    {{ __('Event') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('memberships.index')" :active="request()->routeIs('memberships.*')">
+                    {{ __('Keanggotaan') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <!-- Link Responsif Mahasiswa -->
+            @if (Auth::user()->role == 'mahasiswa')
+                <x-responsive-nav-link :href="route('organizations.browse')" :active="request()->routeIs('organizations.browse')">
+                    {{ __('Cari Organisasi') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('events.list')" :active="request()->routeIs('events.list')">
+                    {{ __('Daftar Event') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -136,4 +156,3 @@
         </div>
     </div>
 </nav>
-

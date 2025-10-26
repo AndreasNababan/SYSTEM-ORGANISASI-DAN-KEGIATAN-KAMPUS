@@ -9,58 +9,54 @@ use Illuminate\Auth\Access\Response;
 class EventPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Izinkan Admin melakukan segalanya.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): bool|null
     {
-        return false;
+        if ($user->role === 'admin_kampus') {
+            return true;
+        }
+        return null;
     }
 
     /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Event $event): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
+     * Siapa yang boleh membuat event baru?
+     * (Hanya Admin dan Ketua Organisasi)
      */
     public function create(User $user): bool
     {
-        return false;
+        return in_array($user->role, ['admin_kampus', 'ketua_organisasi']);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Siapa yang boleh mengupdate event?
+     * (Hanya Admin, atau Ketua Organisasi JIKA event itu miliknya)
      */
     public function update(User $user, Event $event): bool
     {
-        return false;
+        // Admin sudah diizinkan oleh 'before'
+        
+        // Cek untuk Ketua Organisasi
+        $managingOrg = $user->managingOrganization();
+        if (!$managingOrg) {
+            return false; // Dia bukan ketua organisasi yang valid
+        }
+        
+        // Cek kepemilikan
+        return $managingOrg->id === $event->organization_id;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Siapa yang boleh menghapus event?
+     * (Logikanya sama dengan update)
      */
     public function delete(User $user, Event $event): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Event $event): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Event $event): bool
-    {
-        return false;
+        $managingOrg = $user->managingOrganization();
+        if (!$managingOrg) {
+            return false;
+        }
+        
+        return $managingOrg->id === $event->organization_id;
     }
 }

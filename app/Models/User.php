@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail; // Nonaktifkan jika tidak pakai verifikasi email
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Organization; // Import yang sudah Anda tambahkan
+use App\Models\Organization;
+use App\Models\Membership; // <-- PASTIKAN INI ADA
+use App\Models\Event; // <-- TAMBAHKAN INI
 
 class User extends Authenticatable
 {
@@ -52,7 +54,7 @@ class User extends Authenticatable
 
 
     // ===============================================
-    // ==== METHOD RELASI (Letakkan di bawah sini) ====
+    // ==== METHOD RELASI
     // ===============================================
 
     /**
@@ -61,13 +63,21 @@ class User extends Authenticatable
     public function memberships()
     {
         return $this->belongsToMany(Organization::class, 'memberships')
-                    ->withPivot('role', 'status')
+                    ->withPivot('id', 'role', 'status') // Tambahkan 'id' pivot
                     ->withTimestamps();
     }
 
     /**
+     * Relasi ke model pivot Membership.
+     */
+    public function membershipRecords()
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+
+    /**
      * Method helper untuk mengambil organisasi YANG DIA KETUAI.
-     * Kita asumsikan seorang user hanya bisa jadi ketua di 1 organisasi.
      */
     public function managingOrganization()
     {
@@ -77,5 +87,18 @@ class User extends Authenticatable
                     ->wherePivot('status', 'approved')
                     ->first();
     }
-}
 
+    // ===============================================
+    // ==== TAMBAHAN BARU (LANGKAH 1) ====
+    // ===============================================
+
+    /**
+     * Relasi untuk semua event yang didaftari user ini.
+     */
+    public function attendedEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_registrations')
+                    ->withPivot('attended')
+                    ->withTimestamps();
+    }
+}
