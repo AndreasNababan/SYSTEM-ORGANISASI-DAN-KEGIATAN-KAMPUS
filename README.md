@@ -1,44 +1,69 @@
-# Sistem Informasi Organisasi Kampus (SIOK)
+# 🎓 Sistem Informasi Organisasi Kampus (SIOK)
 
-Proyek Sistem Informasi Organisasi Kampus (SIOK) adalah platform berbasis web untuk mendukung pengelolaan organisasi dan kegiatan kampus. Sistem ini dibangun menggunakan Laravel 11 dengan dukungan autentikasi dan peran pengguna yang jelas untuk meningkatkan efisiensi dan transparansi kegiatan kampus.
+SIOK adalah sebuah **web-based Campus Organization Information System** yang dibangun untuk mengelola organisasi dan kegiatan kampus secara terpusat.  
+Dibuat menggunakan **Laravel 11**, **TailwindCSS**, dan **Laravel Breeze** untuk autentikasi.
 
 ---
 
 ## 🚀 Fitur Utama
 
-### 1. Manajemen Organisasi *(Admin Kampus)*
-- CRUD data organisasi kampus
-- Kelola informasi utama: Nama, Logo, Deskripsi, Kontak
+### 🔹 1) Manajemen Organisasi *(Admin Kampus)*  
+- CRUD data organisasi  
+- Upload, preview, dan hapus Logo  
+- Kelola deskripsi & kontak  
+- Lihat anggota tiap organisasi (approved & pending)
 
-### 2. Manajemen Kegiatan *(Admin & Ketua Organisasi)*
-- CRUD data kegiatan atau event kampus
-- Admin dapat mengelola semua kegiatan
-- Ketua organisasi hanya mengelola kegiatan dari organisasinya sendiri
+### 🔹 2) Manajemen Kegiatan/Event *(Admin & Ketua Organisasi)*  
+- CRUD data Event  
+- Upload poster + preview  
+- Admin dapat kelola semua Event  
+- Ketua hanya kelola Event organisasinya (via Policy)  
+- Lihat daftar peserta Event  
 
-### 3. Sistem Autentikasi & Role
-Menggunakan Laravel Breeze dengan 3 peran pengguna:
-| Peran | Akses |
+### 🔹 3) Sistem Keanggotaan Organisasi  
+- Mahasiswa bisa daftar organisasi  
+- Admin/Ketua dapat Approve/Reject pendaftar
+
+### 🔹 4) Pendaftaran Event  
+- Mahasiswa bisa daftar sebagai peserta  
+- Tombol otomatis disabled jika sudah mendaftar
+
+### 🔹 5) Autentikasi & Role  
+Menggunakan Laravel Breeze dengan 3 role utama:
+
+| Role | Akses |
 |------|------|
-| `admin_kampus` | Penuh, mengelola organisasi & semua kegiatan |
-| `ketua_organisasi` | Mengelola kegiatan & anggota organisasinya |
-| `mahasiswa` | Melihat dashboard dan mendaftar kegiatan (pengembangan) |
+| `admin_kampus` | Full access: organisasi, semua event, keanggotaan |
+| `ketua_organisasi` | Kelola event & keanggotaan organisasi sendiri |
+| `mahasiswa` | Bisa daftar organisasi dan event |
 
-### 4. Dashboard Dinamis
-Dashboard akan menampilkan statistik dan event berbeda sesuai peran pengguna yang login.
+### 🔹 6) Dashboard Dinamis  
+Menampilkan informasi berbeda untuk tiap role 🎯
+
+### 🔹 7) User Interface
+- Blade + TailwindCSS  
+- Dark Mode menyeluruh  
+- Navigasi menyesuaikan role pengguna  
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-| Kategori | Teknologi |
-|---------|-----------|
-| Framework | Laravel 11 |
-| Bahasa | PHP 8.2+ |
-| Database | MySQL |
-| Frontend | Blade |
-| Styling | TailwindCSS |
-| Bundler | Vite |
-| Autentikasi | Laravel Breeze |
+| Kategori | Teknologi | Deskripsi |
+|---------|-----------|-----------|
+| Backend | Laravel 11 | MVC, Routing, ORM, dsb |
+|  | PHP 8.2+ | Server-side programming |
+|  | MySQL/MariaDB | Database Relasional |
+|  | Eloquent ORM | Interaksi model–database |
+|  | Middleware, Policies | Otorisasi & filtering request |
+| Frontend | TailwindCSS | Utility-first CSS |
+|  | Alpine.js | JavaScript interaktif kecil |
+|  | Blade | View templating |
+| Build Tools | Vite | Bundler modern |
+| Tools | Git + GitHub | Version control |
+|  | VS Code | Editor development |
+|  | Composer + NPM | Dependency manager |
+| Env | XAMPP/Laragon | Local server & DB |
 
 ---
 
@@ -50,10 +75,10 @@ Dashboard akan menampilkan statistik dan event berbeda sesuai peran pengguna yan
 - Node.js & NPM
 - MySQL Server
 
-### 🔧 Langkah Instalasi
+### 🔧 Setup
 ```bash
-git clone https://github.com/USERNAME-ANDA/NAMA-REPO-ANDA.git
-cd NAMA-REPO-ANDA
+git clone https://github.com/[USERNAME-ANDA]/[NAMA-REPO-ANDA].git
+cd [NAMA-REPO-ANDA]
 cp .env.example .env
 composer install
 npm install
@@ -61,56 +86,76 @@ php artisan key:generate
 ```
 
 ### ⚙️ Konfigurasi Database
-Buat database MySQL baru, lalu sesuaikan konfigurasi di file `.env`:
 ```
 DB_DATABASE=si_organisasi_kampus
 DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Lalu jalankan migrasi:
+Lalu:
 ```bash
 php artisan migrate
-```
-
-Aktifkan storage untuk file upload:
-```bash
 php artisan storage:link
 ```
 
-### ▶️ Menjalankan Proyek
-Jalankan dua terminal:
+---
+
+## ▶️ Menjalankan Proyek
+
+Terminal 1:
 ```bash
 php artisan serve
+```
+
+Terminal 2:
+```bash
 npm run dev
 ```
 
-Akses melalui:
-👉 http://127.0.0.1:8000
+Akses: http://127.0.0.1:8000 ✅
 
 ---
 
-## 🧑‍💻 Membuat Akun Admin
+## 👑 Membuat Akun Admin
 
-1. Register akun melalui halaman register
-2. Akses database lalu ubah kolom `role` user menjadi `admin_kampus`
-3. Refresh dashboard untuk melihat akses admin
+1. Daftar melalui `/register`
+2. Buka tabel `users` di database
+3. Set kolom `role` menjadi `admin_kampus`
+4. Refresh halaman dashboard
 
 ---
 
-## 📌 Status Proyek
-✅ Tahap Pengembangan Awal  
-🛠️ Akan ditambahkan:
-- Manajemen anggota organisasi
-- Pendaftaran kegiatan oleh mahasiswa
-- Notifikasi kegiatan
+## ✅ Status Proyek
+
+| Fitur | Status |
+|------|:-----:|
+| CRUD Organisasi & Event | ✅ |
+| Role & Autentikasi | ✅ |
+| Dashboard Dinamis | ✅ |
+| Keanggotaan Organisasi | ✅ |
+| Pendaftaran Event | ✅ |
+| UI Dark Mode | ✅ |
+| Preview & Hapus File Upload | ✅ |
+
+---
+
+## 🧩 Pengembangan Selanjutnya
+
+- ✅ Role anggota organisasi lebih detail (Ketua/Wakil/Sekretaris)
+- 🔄 Verifikasi kehadiran event (QR Code)
+- 🔄 Notifikasi event & pendaftaran baru
+- 🔄 Halaman detail Event/Organisasi lebih kaya
+- 🔄 Pencarian & filter data
+- (Kalo Ada Waktu Luang Di Tamabahin Semua Fitur Nya)
 
 ---
 
 ## 📜 Lisensi
-Proyek ini mengikuti lisensi sesuai repositori GitHub masing-masing.
+
+SIOK dirilis dengan **MIT License**  
+(atau sesuai file lisensi pada repository GitHub)
 
 ---
 
-Terima kasih telah menggunakan Sistem Informasi Organisasi Kampus! 🎓✨
-Saran dan kontribusi sangat terbuka.
+🎉 Terima kasih telah menggunakan Sistem Informasi Organisasi Kampus!  
+Kontribusi dan feedback sangat kami hargai! 🙌
