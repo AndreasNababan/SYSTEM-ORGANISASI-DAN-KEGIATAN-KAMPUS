@@ -146,6 +146,7 @@ Akses: http://127.0.0.1:8000 ✅
 - 🔄 Notifikasi event & pendaftaran baru
 - 🔄 Halaman detail Event/Organisasi lebih kaya
 - 🔄 Pencarian & filter data
+  (Kalo Ada Waktu Luang Di Tamabahin)
 
 ---
 
